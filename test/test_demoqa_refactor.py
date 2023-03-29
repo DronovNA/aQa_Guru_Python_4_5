@@ -1,10 +1,9 @@
-from selene import browser
+from selene import browser, command
 from selene import be, have
 import os
 
 
 def test_form(hold_browser):
-    browser.config.browser_name = 'firefox'
     browser.open("https://demoqa.com/automation-practice-form")
     browser.element("#firstName").should(be.blank).type("Test")
     browser.element("#lastName").should(be.blank).type("Testovich")
@@ -17,10 +16,11 @@ def test_form(hold_browser):
     browser.element('[class="react-datepicker__day react-datepicker__day--001 react-datepicker__day--weekend"]').should(
         be.clickable
     ).click()
-    browser.element("#subjectsInput").should(be.blank).type("sci").press_enter()
-    browser.element('[for="hobbies-checkbox-2"]').should(be.clickable).click()
-    browser.element("#uploadPicture").send_keys(os.getcwd() + "/example.png")
+    browser.element('.subjects-auto-complete__input>input').should(be.blank).type("sci").press_enter()
+    browser.element('[for="hobbies-checkbox-2"]').should(be.clickable).perform(command.js.click)
+    browser.element("#uploadPicture").send_keys(os.getcwd() + '\example.png')
     browser.element("#currentAddress").should(be.blank).type("Test test test")
+    browser.element('footer').perform(command.js.remove)
     browser.element("#state").should(be.clickable).click()
     browser.element('//div[text()="NCR"]').should(be.clickable).click()
     browser.element("#city").should(be.clickable).click()
